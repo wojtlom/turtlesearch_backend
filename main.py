@@ -1,26 +1,33 @@
 from flask import Flask, request, jsonify
-import requests
 from flask_cors import CORS
+import requests
 
 app = Flask(__name__)
 CORS(app)
 
-BRAVE_API_KEY = "BSA9RPTEcise3sSHOoSzjNgTy5YyoCH"
+API_KEY = "AIzaSyB7k4Nm6KjEHPzob6QhXeex8yWa58GSR_w"
+CX = "52405994a3a4749bc"
 
 @app.route("/search")
 def search():
-    query = request.args.get("q", "")
-    if not query:
-        return jsonify({"error": "Brak zapytania"}), 400
+    query = request.args.get("q")
+    url = f"https://www.googleapis.com/customsearch/v1?q={query}&key={API_KEY}&cx={CX}"
+    res = requests.get(url)
+    data = res.json()
 
-    headers = {
-        "Accept": "application/json",
-        "X-Subscription-Token": BRAVE_API_KEY
-    }
-    params = {"q": query}
-    r = requests.get("https://api.search.brave.com/res/v1/web/search", headers=headers, params=params)
+    results = []
+    for item in data.get("items", []):
+        results.append({
+            "title": item["title"],
+            "url": item["link"],
+            "description": item.get("snippet", "")
+        })
 
-    return jsonify(r.json())
+    return jsonify({
+        "web": {
+            "results": results
+        }
+    })
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=3000)
