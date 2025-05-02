@@ -1,0 +1,4 @@
+flask
+requests
+flask-cors
+ngrok==1.4.0
