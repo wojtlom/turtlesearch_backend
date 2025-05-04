@@ -5,8 +5,8 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-API_KEY = "AIzaSyB7k4Nm6KjEHPzob6QhXeex8yWa58GSR_w"
-CX = "52405994a3a4749bc"
+API_KEY = "wpisz tutaj kod api"
+CX = "a tutaj wpisz kod CX"
 
 @app.route("/search")
 def search():
