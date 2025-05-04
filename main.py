@@ -8,6 +8,10 @@ CORS(app)
 API_KEY = "wpisz tutaj kod api"
 CX = "a tutaj wpisz kod CX"
 
+@app.route("/")
+def home():
+    return "Turtle API działa 🐢"
+
 @app.route("/search")
 def search():
     query = request.args.get("q")
