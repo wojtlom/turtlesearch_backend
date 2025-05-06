@@ -5,27 +5,23 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-API_KEY = "AIzaSyB7k4Nm6KjEHPzob6QhXeex8yWa58GSR_w"
-CX = "641168282304"
-
-@app.route("/")
-def home():
-    return "Turtle API działa 🐢"
-
 @app.route("/search")
 def search():
     query = request.args.get("q")
-    url = f"https://www.googleapis.com/customsearch/v1?q={query}&key={API_KEY}&cx={CX}"
+    url = f"https://api.duckduckgo.com/?q={query}&format=json&no_html=1&skip_disambig=1"
     res = requests.get(url)
     data = res.json()
 
     results = []
-    for item in data.get("items", []):
-        results.append({
-            "title": item["title"],
-            "url": item["link"],
-            "description": item.get("snippet", "")
-        })
+
+    # Przykładowe wyniki z "RelatedTopics"
+    for topic in data.get("RelatedTopics", []):
+        if "Text" in topic and "FirstURL" in topic:
+            results.append({
+                "title": topic["Text"].split(" - ")[0],
+                "url": topic["FirstURL"],
+                "description": topic["Text"]
+            })
 
     return jsonify({
         "web": {
