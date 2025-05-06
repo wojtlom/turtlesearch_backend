@@ -5,8 +5,8 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-API_KEY = "wpisz tutaj kod api"
-CX = "a tutaj wpisz kod CX"
+API_KEY = "AIzaSyB7k4Nm6KjEHPzob6QhXeex8yWa58GSR_w"
+CX = "641168282304"
 
 @app.route("/")
 def home():
